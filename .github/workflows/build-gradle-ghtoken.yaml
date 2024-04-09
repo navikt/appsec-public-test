@@ -1,4 +1,4 @@
-name: Build gradle app
+name: Build gradle app with GITHUB_TOKEN
 on:
   workflow_dispatch:
 
