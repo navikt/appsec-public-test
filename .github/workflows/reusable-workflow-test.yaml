@@ -20,4 +20,4 @@ jobs:
     secrets: inherit
     with:
       team: appsec
-  
+      image: ${{ steps.build.outputs.image }}
