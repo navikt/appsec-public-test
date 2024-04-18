@@ -4,7 +4,7 @@ on:
 
 jobs:
   build:
-    uses: navikt/.github/.github/workflows/gradle-build.yaml@main
+    uses: navikt/workflows/.github/workflows/gradle-build.yaml@main
     permissions:
       contents: write
       id-token: write
@@ -12,7 +12,7 @@ jobs:
     with:
       team: appsec
   scan:
-    uses: navikt/.github/.github/workflows/trivy.yaml@main
+    uses: navikt/workflows/.github/workflows/trivy.yaml@main
     permissions:
       contents: write
       security-events: write
