@@ -11,7 +11,9 @@ jobs:
     secrets: inherit
     with:
       team: appsec
+      use_reader_token: true
   scan:
+    needs: [ build ]
     uses: navikt/workflows/.github/workflows/trivy.yaml@main
     permissions:
       contents: write
