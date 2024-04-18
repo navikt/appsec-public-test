@@ -1,0 +1,23 @@
+name: Build Pull Request
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: navikt/.github/workflows/gradle-build.yaml@main
+    permissions:
+      contents: write
+      id-token: write
+    secrets: inherit
+    with:
+      team: appsec
+  scan:
+    uses: navikt/.github/workflows/trivy.yaml@main
+    permissions:
+      contents: write
+      security-events: write
+      id-token: write
+    secrets: inherit
+    with:
+      team: appsec
+  
