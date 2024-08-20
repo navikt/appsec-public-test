@@ -1,0 +1,9 @@
+name: Build gradle app with octo-sts token
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    permissions:
+      contents: read
+      id-token: write
+    uses: navikt/appsec-public-test/.github/workflows/sts-reusable.yaml@main
