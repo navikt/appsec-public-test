@@ -21,7 +21,7 @@ repositories {
     // Try github for internal packages.
     maven {
         name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/navikt/appsec-public-test")
+        url = uri("https://maven.pkg.github.com/navikt/appsec-internal-test")
         credentials {
             username = System.getenv("GITHUB_ACTOR")
             password = System.getenv("GITHUB_TOKEN")
