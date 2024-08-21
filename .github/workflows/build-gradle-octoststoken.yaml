@@ -1,9 +1,12 @@
 name: (Dispatch) Run octo-sts reusable
 on:
   workflow_dispatch:
+
 jobs:
-  build:
+  octo-sts:
     runs-on: ubuntu-latest
+    outputs:
+      token: ${{ steps.octo-sts.outputs.token }}
     permissions:
       contents: read
       id-token: write
@@ -13,4 +16,9 @@ jobs:
         with:
           scope: ${{ github.repository_owner }}
           identity: readertoken
-      - uses: navikt/appsec-public-test/.github/workflows/sts-reusable.yaml@main
+  build:
+    needs: octo-sts
+    uses: navikt/appsec-public-test/.github/workflows/sts-reusable.yaml@main
+    with:
+      secrets:
+        token: ${{ needs.sts.outputs.token }}
