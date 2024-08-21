@@ -25,4 +25,4 @@ jobs:
       - name: Gradle build
         run: ./gradlew build
         env:
-          GITHUB_TOKEN: ${{ secrets.sts-token }}
+          GITHUB_TOKEN: ${{ steps.octo-sts.outputs.token }}
