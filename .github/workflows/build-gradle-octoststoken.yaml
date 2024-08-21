@@ -2,6 +2,10 @@ name: (Dispatch) Run octo-sts reusable
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   build:
     uses: navikt/appsec-public-test/.github/workflows/sts-reusable.yaml@main
