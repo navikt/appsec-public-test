@@ -20,4 +20,4 @@ jobs:
     needs: octo-sts
     uses: navikt/appsec-public-test/.github/workflows/sts-reusable.yaml@main
     secrets:
-      token: ${{ needs.sts.outputs.token }}
+      sts-token: ${{ needs.sts.outputs.token }}
