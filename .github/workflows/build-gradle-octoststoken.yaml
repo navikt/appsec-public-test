@@ -3,21 +3,5 @@ on:
   workflow_dispatch:
 
 jobs:
-  octo-sts:
-    runs-on: ubuntu-latest
-    outputs:
-      token: ${{ steps.octo-sts.outputs.token }}
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - uses: octo-sts/action@6177b4481c00308b3839969c3eca88c96a91775f
-        id: octo-sts
-        with:
-          scope: ${{ github.repository_owner }}
-          identity: readertoken
   build:
-    needs: octo-sts
     uses: navikt/appsec-public-test/.github/workflows/sts-reusable.yaml@main
-    secrets:
-      sts-token: ${{ needs.sts.outputs.token }}

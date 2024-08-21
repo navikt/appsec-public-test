@@ -1,14 +1,17 @@
 name: (Reusable) Build gradle app with octo-sts token
 on:
   workflow_call:
-    secrets:
-      sts-token:
-        required: true
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: octo-sts/action@6177b4481c00308b3839969c3eca88c96a91775f
+        id: octo-sts
+        with:
+          scope: ${{ github.repository_owner }}
+          identity: readertoken
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
