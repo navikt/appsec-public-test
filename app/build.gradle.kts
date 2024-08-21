@@ -23,8 +23,8 @@ repositories {
         name = "GitHubPackages"
         url = uri("https://maven.pkg.github.com/navikt/appsec-internal-test")
         credentials {
-            username = System.getenv("GITHUB_ACTOR")
-            password = System.getenv("GITHUB_TOKEN")
+            username = System.getenv("GITHUB_ACTOR") as String? ?: "github"
+            password = System.getenv("GITHUB_TOKEN") as String?
         }
     }
 }

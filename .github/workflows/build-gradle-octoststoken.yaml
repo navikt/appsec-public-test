@@ -1,9 +1,16 @@
-name: Dispatch octo-sts reusable
+name: (Dispatch) Run octo-sts reusable
 on:
   workflow_dispatch:
 jobs:
   build:
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
-    uses: navikt/appsec-public-test/.github/workflows/sts-reusable.yaml@main
+    steps:
+      - uses: octo-sts/action@6177b4481c00308b3839969c3eca88c96a91775f
+        id: octo-sts
+        with:
+          scope: ${{ github.repository_owner }}
+          identity: readertoken
+      - uses: navikt/appsec-public-test/.github/workflows/sts-reusable.yaml@main

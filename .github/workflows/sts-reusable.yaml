@@ -1,6 +1,7 @@
-name: Build gradle app with octo-sts token
+name: (Reusable) Build gradle app with octo-sts token
 on:
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   build:
