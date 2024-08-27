@@ -22,4 +22,6 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
           token: ${{ steps.octo-sts.outputs.token }}
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd my-app
+          npm ci
