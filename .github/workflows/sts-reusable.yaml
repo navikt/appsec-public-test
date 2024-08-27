@@ -15,6 +15,12 @@ jobs:
         with:
           scope: ${{ github.repository_owner }}
           identity: readertoken
+      - name: debug-check
+        run: |
+            curl -I \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer ${{ steps.octo-sts.outputs.token }}" \
+            https://api.github.com/users
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
