@@ -1,0 +1,25 @@
+name: Build npm app with octo-sts
+on:
+  workflow_dispatch:
+env:
+  CI: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: octo-sts/action@v1.0.0
+        id: octo-sts
+        with:
+          scope: ${{ github.repository_owner }}
+          identity: readertoken
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://npm.pkg.github.com"
+          token: ${{ steps.octo-sts.outputs.token }}
+      - name: Install dependencies
+        run: npm ci
