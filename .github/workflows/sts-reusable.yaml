@@ -16,7 +16,9 @@ jobs:
           scope: ${{ github.repository_owner }}
           identity: readertoken
       - name: check token status
-        run: gh auth status
+        run: |
+          gh auth login --with-token < ${{ steps.octo-sts.outputs.token }}
+          gh auth status
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
