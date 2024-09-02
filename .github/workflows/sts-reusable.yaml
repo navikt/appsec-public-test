@@ -17,7 +17,7 @@ jobs:
           identity: readertoken
       - name: check token status
         run: |
-          gh auth login --with-token < ${{ steps.octo-sts.outputs.token }}
+          echo ${{ steps.octo-sts.outputs.token }} | gh auth login --with-token
           gh auth status
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
