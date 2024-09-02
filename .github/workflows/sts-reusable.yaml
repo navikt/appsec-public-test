@@ -15,9 +15,10 @@ jobs:
         with:
           scope: ${{ github.repository_owner }}
           identity: readertoken
+      - name: gh login
+        run: echo ${{ steps.octo-sts.outputs.token }} | gh auth login --with-token
       - name: check token status
         run: |
-          echo ${{ steps.octo-sts.outputs.token }} | gh auth login --with-token
           gh api \
           -H "Accept: application/vnd.github+json" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
