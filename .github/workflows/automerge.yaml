@@ -6,6 +6,8 @@ on:
 jobs:
   automerge:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Automerge Dependabot PRs
         uses: navikt/automerge-dependabot@main
