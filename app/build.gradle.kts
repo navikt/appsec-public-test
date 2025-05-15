@@ -20,10 +20,15 @@ dependencies {
     // Use the Kotlin JUnit 5 integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+    implementation("org.springframework.boot:spring-boot-starter-web:2.8.0")
+
     // Use the JUnit 5 integration.
     testImplementation(libs.junit.jupiter.engine)
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test
+    testImplementation("org.springframework.boot:spring-boot-starter-test:3.4.0")
 
     // This dependency is used by the application.
     implementation(libs.guava)
