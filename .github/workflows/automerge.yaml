@@ -19,4 +19,6 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
           minimum-age-of-pr: '3'
-          ignored-dependencies: path-to-regexp@*
+          ignored-dependencies: path-to-regexp@*, express
+          semver-filter: minor,patch
+          merge-method: squash
