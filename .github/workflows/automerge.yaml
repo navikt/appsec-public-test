@@ -18,7 +18,7 @@ jobs:
         uses: navikt/automerge-dependabot@main
         with:
           token: ${{ steps.app-token.outputs.token }}
-          minimum-age-of-pr: '1'
-          ignored-dependencies: path-to-regexp@*, express
-          semver-filter: minor,patch
+          minimum-age-of-pr: '0'
+          ignored-dependencies: path-to-regexp@*,express,react-dom@19.1.0, react@19.1.0
+          semver-filter: minor,patch,major
           merge-method: squash
