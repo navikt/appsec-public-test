@@ -24,6 +24,8 @@ updates:
     directory: "/my-app"
     schedule:
       interval: "daily"
+    registries:
+      - "npm-github"
     groups:
       npm:
         patterns:
