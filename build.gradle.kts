@@ -1,3 +1,4 @@
+/*
 subprojects {
     repositories {
         mavenCentral()
@@ -11,3 +12,4 @@ subprojects {
         }
     }
 }
+*/
