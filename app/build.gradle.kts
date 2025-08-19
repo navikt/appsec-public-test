@@ -15,6 +15,18 @@ plugins {
     id("org.cyclonedx.bom") version "2.3.1"
 }
 
+repositories {
+        mavenCentral()
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/navikt/appsec-internal-test")
+            credentials {
+                username = project.findProperty("gpr.user") as String? ?: "x-access-token"
+                password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+}
+
 dependencies {
     implementation("com.github.navikt:appsec-internal-test:625605ff5d1d78d8a9fce5e621367470ad47793b")
     // Use the Kotlin JUnit 5 integration.
