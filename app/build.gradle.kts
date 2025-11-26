@@ -12,7 +12,7 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
 
-    id("org.cyclonedx.bom") version "2.3.1"
+    id("org.cyclonedx.bom") version "3.0.2"
 }
 
 dependencies {
@@ -21,14 +21,14 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
-    implementation("org.springframework.boot:spring-boot-starter-web:3.5.0")
+    implementation("org.springframework.boot:spring-boot-starter-web:4.0.0")
 
     // Use the JUnit 5 integration.
     testImplementation(libs.junit.jupiter.engine)
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test
-    testImplementation("org.springframework.boot:spring-boot-starter-test:3.5.0")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:4.0.0")
 
     // This dependency is used by the application.
     implementation(libs.guava)
