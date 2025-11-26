@@ -1,6 +1,5 @@
 subprojects {
     repositories {
-        mavenCentral()
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/navikt")
