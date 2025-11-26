@@ -16,7 +16,7 @@ plugins {
 }
 
 dependencies {
-    implementation("com.github.navikt:appsec-internal-test:625605ff5d1d78d8a9fce5e621367470ad47793b")
+    implementation("com.github.navikt:appsec-internal-test:ed4946b98391b4931f871fc050416e9403f94751")
     // Use the Kotlin JUnit 5 integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 
