@@ -10,13 +10,13 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: octo-sts/action@v1.0.0
+      - uses: actions/checkout@v6
+      - uses: octo-sts/action@v1.0.3
         id: octo-sts
         with:
           scope: ${{ github.repository_owner }}
           identity: readertoken
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
           registry-url: "https://npm.pkg.github.com"
