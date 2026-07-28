@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/java21-debian12@sha256:769c6ae82b1aaeeecc263f7fe3662668ab2841d3f62ed8d54c5221555c53d754
+FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/jre:openjdk-25@sha256:a53b3e296a0926b3d5fef1bc8d938bf39184e4263c3df8a09ec48f6a47f24f9b
 
 COPY app/build/libs/app.jar /app/app.jar
 WORKDIR /app
