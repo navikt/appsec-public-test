@@ -1,5 +1,6 @@
-FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/jre:openjdk-27@sha256:05ef05db3439b79450c2f6dc1580a4cf1179a86f6d9342a52810a7a1fc2bae58
+FROM docker.io/library/busybox:1.37.0
 
-COPY app/build/libs/app.jar /app/app.jar
-WORKDIR /app
-CMD [ "app.jar" ]
+RUN mkdir -p /www && printf 'Hello world!\n' > /www/index.html
+USER 65532:65532
+EXPOSE 8080
+CMD ["httpd", "-f", "-p", "8080", "-h", "/www"]

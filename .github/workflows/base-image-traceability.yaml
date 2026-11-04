@@ -1,0 +1,96 @@
+name: Build and deploy with base image traceability
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: base-image-traceability-prod-gcp
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: prod-gcp
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4.4.0
+      - uses: imjasonh/setup-crane@v0.4
+        with:
+          version: v0.22.1
+      - name: Authenticate before resolving the base image
+        uses: nais/login@40b72a35a18ddf2ad74b632461139ab838cc2a2f # v0
+        with:
+          team: appsec-workshop
+      - name: Resolve SHA of the base image tag in Dockerfile
+        id: base
+        run: |
+          set -euo pipefail
+          BASE_IMAGE=$(sed -n 's/^FROM \([^ ]*\)$/\1/p' Dockerfile)
+          if [[ $(grep -c '^FROM ' Dockerfile) -ne 1 || -z "$BASE_IMAGE" || "$BASE_IMAGE" == *@* ]]; then
+            echo "::error::Dockerfile must have exactly one 'FROM <image>:<tag>' line without a digest."
+            exit 1
+          fi
+          digest=$(crane digest "$BASE_IMAGE")
+          if [[ ! "$digest" =~ ^sha256:[0-9a-f]{64}$ ]]; then
+            echo "::error::crane did not return a SHA-256 manifest digest."
+            exit 1
+          fi
+          hash="${digest#sha256:}"
+          name="${BASE_IMAGE%:*}"
+          {
+            echo "base_image=$BASE_IMAGE@$digest"
+            echo "base_image_name=${name##*/}"
+            echo "base_image_tag=${BASE_IMAGE##*:}"
+            echo "base_image_digest=$digest"
+            echo "base_sha256_first=${hash:0:32}"
+            echo "base_sha256_last=${hash:32:32}"
+          } >> "$GITHUB_OUTPUT"
+          # Pin the resolved SHA in the checked-out copy only, so the build uses exactly what we record.
+          sed -i "s|^FROM .*|FROM $BASE_IMAGE@$digest|" Dockerfile
+          {
+            printf '### Image traceability\n\n'
+            printf '| | Reference |\n|---|---|\n'
+            # shellcheck disable=SC2016 # Markdown code span, not command substitution
+            printf '| Base image (resolved) | `%s@%s` |\n' "$BASE_IMAGE" "$digest"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Build and push with the resolved base image
+        id: image
+        uses: nais/docker-build-push@v0
+        with:
+          team: appsec-workshop
+          platforms: linux/amd64
+          pull: true
+      - name: Prepare deployment variables
+        env:
+          IMAGE: ${{ steps.image.outputs.image }}
+          IMAGE_DIGEST: ${{ steps.image.outputs.digest }}
+          BASE_IMAGE: ${{ steps.base.outputs.base_image }}
+          BASE_IMAGE_NAME: ${{ steps.base.outputs.base_image_name }}
+          BASE_IMAGE_TAG: ${{ steps.base.outputs.base_image_tag }}
+          BASE_SHA256_FIRST: ${{ steps.base.outputs.base_sha256_first }}
+          BASE_SHA256_LAST: ${{ steps.base.outputs.base_sha256_last }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$IMAGE" || ! "$IMAGE_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]; then
+            echo "::error::Build did not return an application image and SHA-256 digest."
+            exit 1
+          fi
+          image="${IMAGE%%@*}@$IMAGE_DIGEST"
+          jq -n \
+            --arg image "$image" \
+            --arg base_image "$BASE_IMAGE" \
+            --arg base_image_name "$BASE_IMAGE_NAME" \
+            --arg base_image_tag "$BASE_IMAGE_TAG" \
+            --arg base_sha256_first "$BASE_SHA256_FIRST" \
+            --arg base_sha256_last "$BASE_SHA256_LAST" \
+            '$ARGS.named' > "$RUNNER_TEMP/base-image-vars.json"
+          # shellcheck disable=SC2016 # Markdown code span, not command substitution
+          printf '| Application image | `%s` |\n| Build platform | `linux/amd64` |\n' "$image" >> "$GITHUB_STEP_SUMMARY"
+      - name: Deploy to prod-gcp
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/nais.yaml
+          VARS: ${{ runner.temp }}/base-image-vars.json
+          WAIT: "true"

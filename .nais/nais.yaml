@@ -1,0 +1,32 @@
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  name: appsec-public-test
+  namespace: appsec-workshop
+  # Option A: full reference in one annotation. Visible on the Application, not on pods.
+  annotations:
+    base-image-reference: "{{ base_image }}"
+  # Option B: labels, propagated to pods. Values max 63 chars, so the SHA-256 is split in two halves.
+  labels:
+    team: appsec-workshop
+    base-image-name: "{{ base_image_name }}"
+    base-image-tag: "{{ base_image_tag }}"
+    base-image-digest-algorithm: sha256
+    base-image-sha256-first: "{{ base_sha256_first }}"
+    base-image-sha256-last: "{{ base_sha256_last }}"
+spec:
+  image: "{{ image }}"
+  port: 8080
+  liveness:
+    path: /
+  readiness:
+    path: /
+  resources:
+    requests:
+      cpu: 50m
+      memory: 16Mi
+    limits:
+      memory: 32Mi
+  replicas:
+    min: 1
+    max: 1
