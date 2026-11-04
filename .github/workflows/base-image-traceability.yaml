@@ -14,8 +14,8 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4.4.0
-      - uses: imjasonh/setup-crane@v0.4
+      - uses: actions/checkout@v7.0.1
+      - uses: imjasonh/setup-crane@v0.7
         with:
           version: v0.22.1
       - name: Authenticate before resolving the base image
@@ -88,7 +88,7 @@ jobs:
           # shellcheck disable=SC2016 # Markdown code span, not command substitution
           printf '| Application image | `%s` |\n| Build platform | `linux/amd64` |\n' "$image" >> "$GITHUB_STEP_SUMMARY"
       - name: Deploy to prod-gcp
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           CLUSTER: prod-gcp
           RESOURCE: .nais/nais.yaml
